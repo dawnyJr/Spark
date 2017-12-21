@@ -26,12 +26,14 @@ object TotalSpentByCustomer {
 
     val mappedInput = input.map(extractCustomerPricePairs)
     
-    val totalByCustomer = mappedInput.reduceByKey( (x,y) => x + y )
+    val totalByCustomerSorted = mappedInput.reduceByKey( (x,y) => x + y ).map(x => (x._2,x._1)).sortByKey(false)
     
-    val results = totalByCustomer.collect()
+    val results = totalByCustomerSorted.collect()
     
     // Print the results.
-    results.foreach(println)
+    for(row <- results){
+      println(s"(${row._2} : ${row._1} )")
+    }
   }
   
 }
